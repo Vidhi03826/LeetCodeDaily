@@ -1,42 +1,35 @@
-import java.util.*;
-
 class Solution {
+    public int helper(int i, int j, int [] cuts, int [][]dp){
+   if(i>j) return 0;
+   if(dp[i][j] !=-1) return dp[i][j];
+   int mini = Integer.MAX_VALUE;
+   for(int k =i;k<=j;k++){
+    int cost = cuts[j+1] - cuts[i-1] +helper(i,k-1, cuts, dp) + helper(k+1,j, cuts, dp);
+    mini = Math.min(cost, mini);
+   }
+
+   return dp[i][j]= mini;
+    }
     public int minCost(int n, int[] cuts) {
-        int m = cuts.length;
-        
-        // New array with 0 and n added
-        int[] arr = new int[m + 2];
-        arr[0] = 0;
-        arr[m + 1] = n;
-        
-        for (int i = 0; i < m; i++) {
-            arr[i + 1] = cuts[i];
+        int c = cuts.length;
+        int newcuts[] = new int[c+2];
+        for(int i=0;i<c;i++){
+            newcuts[i+1]= cuts[i];
         }
-        
-        Arrays.sort(arr);
-        
-        // DP table
-        int[][] dp = new int[m + 2][m + 2];
-        
-        // Length of interval
-        for (int len = 2; len < m + 2; len++) {
-            for (int i = 0; i + len < m + 2; i++) {
-                int j = i + len;
-                dp[i][j] = Integer.MAX_VALUE;
-                
-                for (int k = i + 1; k < j; k++) {
-                    int cost = arr[j] - arr[i] 
-                             + dp[i][k] 
-                             + dp[k][j];
-                    
-                    dp[i][j] = Math.min(dp[i][j], cost);
-                }
-                
-                if (dp[i][j] == Integer.MAX_VALUE)
-                    dp[i][j] = 0;
-            }
+      
+        newcuts[0] = 0;
+        newcuts[c+1] = n;
+
+     Arrays.sort(newcuts);
+
+        int [][] dp = new int[c+2][c+2];
+
+        for(int [] row:dp){
+            Arrays.fill(row, -1);
         }
-        
-        return dp[0][m + 1];
+
+
+    return helper(1,c, newcuts, dp);
+
     }
 }
