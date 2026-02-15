@@ -9,7 +9,7 @@ class Solution {
 
         for (int i = 1; i <= n; i++) {
             for (int target = 0; target <= amount; target++) {
-              
+                
                 dp[i][target] = dp[i - 1][target];
 
                 if (coins[i - 1] <= target) {
