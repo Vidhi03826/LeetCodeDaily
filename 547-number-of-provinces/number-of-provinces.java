@@ -3,7 +3,7 @@ class Solution {
         vis[i] = true;
         Queue<Integer> q  = new LinkedList<>();
         q.add(i);
-        while(!q.isEmpty()){
+         while(!q.isEmpty()){
             int front = q.remove();
             for(int j=0;j<isConnected.length;j++){
                 if(isConnected[front][j] == 1 && vis[j] == false){
