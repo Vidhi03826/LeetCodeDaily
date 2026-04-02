@@ -1,3 +1,50 @@
+// class Solution {
+//     public void solve(char[][] board) {
+//         int m = board.length;
+//         int n = board[0].length;
+//         int vis[][] = new int[m][n];
+//         int [] delrow = {-1,0,+1,0};
+//         int [] delcol = {0,+1,0,-1};
+
+
+//         for(int j=0;j<n;j++){
+//             if(!vis[j]){
+//                 dfs(0, j , delrow, delcol,board, m , n);
+//             }
+//             if(!vis[j]){
+//                 dfs(m-1, j, delrow, delcol, board, m , n);
+//             }
+//         }
+//         for(int i=0;i<m;j++){
+//             if(!vis[i]){
+//                 dfs(i, 0 , delrow, delcol,board,vis, m , n);
+//             }
+//             if(!vis[j]){
+//                 dfs(i, n-1, delrow, delcol, board,vis, m , n);
+//             }
+//         }
+
+//         for(int i=0;i<m;i++){
+//             for(int j=0;j<n;j++){
+//                 if(vis[i][j]!=-1 && board[i][j] = 'O') {
+//                     vis[i][j] = 'X';
+//                 }
+//             }
+//         }
+
+//         private void dfs(int row, int col, int[] delrow, int[] delcol, int[][] board, int[][] vis,int  m , int n){
+//             vis[row][col]=1;
+//             for(int i=0;i<4;i++){
+             
+//                     int nrow = row + delrow[i];
+//                     int ncol = col + delcol[i];
+//                     if(nrow>=0 && nrow<n && ncol>=0 && ncol<m && vis[nrow][ncol]==0 && board[nrow][ncol]=='O')
+//                     dfs(row, col, delrow, delcol,board, vis, m,n);
+//                 }
+            
+//         }
+//     }
+// }
 class Solution {
     
     public void solve(char[][] board) {
