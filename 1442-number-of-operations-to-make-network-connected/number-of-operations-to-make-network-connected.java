@@ -53,27 +53,28 @@ class DisjointSet {
 class Solution {
     public int makeConnected(int n, int[][] connections) {
         DisjointSet ds = new DisjointSet(n);
-        int m = connections.length;
         int cntExtras = 0;
-
+        int m = connections.length;
         for(int i=0;i<m;i++){
             int u = connections[i][0];
-            int v = connections[i][1];
-
-            if(ds.findUPar(u)== ds.findUPar(v)){
+            int v= connections[i][1];
+            if(ds.findUPar(u)==ds.findUPar(v)){
                 cntExtras++;
             }
-            else {
+            else{
                 ds.unionBySize(u,v);
             }
         }
-
         int cntC = 0;
         for(int i=0;i<n;i++){
-            if(ds.parent.get(i)==i) cntC++;
+            if(ds.parent.get(i)==i) {
+                cntC++;
+            }
         }
-        int ans = cntC -1;
-        if(cntExtras>=ans) return ans;
-        else return -1;
+        int ans = cntC-1;
+        if(cntExtras>=ans){
+            return ans;
+        }
+        return -1;
     }
 }
