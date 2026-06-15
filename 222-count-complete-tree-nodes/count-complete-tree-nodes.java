@@ -25,7 +25,7 @@ class Solution {
           return (1 << left) - 1;
         }
         else{
-           return countNodes( root.left) + countNodes( root.right) +1;
+           return countNodes(root.left) + countNodes( root.right) +1;
         }
     }
        
