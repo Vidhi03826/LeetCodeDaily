@@ -25,14 +25,13 @@ class Solution {
          return -1;
     }
      public TreeNode helper(int[] preorder, int[] inorder, int left, int right){
-    //    int preidx =0;
-    if(left>right){
-        return null;
-    }
-        TreeNode root = new TreeNode (preorder[preidx]);
-         
-       
 
+    // int preidx =0;
+           if(left>right){
+           return null;
+          }
+          
+        TreeNode root = new TreeNode (preorder[preidx]);
         int Inidx =  search(inorder,preorder[preidx] , left, right);
         preidx++;
         
