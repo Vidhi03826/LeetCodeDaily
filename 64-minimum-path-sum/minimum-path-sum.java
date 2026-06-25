@@ -16,10 +16,7 @@ class Solution {
     }
      public int helper(int[][] grid, int [][] dp , int i, int j ){
         if(i<0 || j<0) return Integer.MAX_VALUE;
-
-       
-
-        if(i==0 && j==0) {
+       if(i==0 && j==0) {
             return grid[0][0];
         }
          if(dp[i][j]!=-1) return dp[i][j];
