@@ -17,38 +17,25 @@
 
 class Solution {
    
-    public int widthOfBinaryTree(TreeNode root) {
+ public int widthOfBinaryTree(TreeNode root) {
+    if (root == null){
+         return 0;
+    }
+     int maxWidth = 0;
+     Queue<Pair<TreeNode, Integer>> q = new LinkedList<>();
+      q.offer(new Pair<>(root, 0));
 
-       
-        if (root == null)
-            return 0;
-
-        int maxWidth = 0;
-
-       
-        Queue<Pair<TreeNode, Integer>> q = new LinkedList<>();
-
-    
-        q.offer(new Pair<>(root, 0));
-
-        
         while (!q.isEmpty()) {
-
-           
             int size = q.size();
             int minIndex = q.peek().getValue();
-
             int first = 0, last = 0;
 
-            
             for (int i = 0; i < size; i++) {
-
-              
-                Pair<TreeNode, Integer> p = q.poll();
+             Pair<TreeNode, Integer> p = q.poll();
+             
                 TreeNode node = p.getKey();
                 int currIndex = p.getValue() - minIndex;
-
-                if (i == 0)
+                 if (i == 0)
                     first = currIndex;
 
                 if (i == size - 1)
