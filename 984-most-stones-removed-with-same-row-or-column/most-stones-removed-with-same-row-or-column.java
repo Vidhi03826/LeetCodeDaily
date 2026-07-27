@@ -53,7 +53,7 @@ class DisjointSet {
 
 class Solution {
     public int removeStones(int[][] stones) {
-        int n= stones.length;
+        int n=stones.length;
         int maxrow= 0;
         int maxcol= 0;
         for(int i=0;i<n;i++){
