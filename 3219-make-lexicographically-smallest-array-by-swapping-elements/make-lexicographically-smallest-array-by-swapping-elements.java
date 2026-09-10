@@ -1,51 +1,33 @@
 class Solution {
     public int[] lexicographicallySmallestArray(int[] nums, int limit) {
-
         int n = nums.length;
+        int[] vec = nums.clone();
+        Arrays.sort(vec);
 
-        // Store {value, original index\}
-        int[][] arr = new int[n][2];
+        int groupNum = 0;
+        Map<Integer, Integer> numToGroup = new HashMap<>();
+        Map<Integer, LinkedList<Integer>> groupToList = new HashMap<>();
 
+        numToGroup.put(vec[0], groupNum);
+        groupToList.putIfAbsent(groupNum, new LinkedList<>());
+        groupToList.get(groupNum).add(vec[0]);
+
+        for (int i = 1; i < n; i++) {
+            if (Math.abs(vec[i] - vec[i - 1]) > limit) {
+                groupNum++;
+            }
+            numToGroup.put(vec[i], groupNum);
+            groupToList.putIfAbsent(groupNum, new LinkedList<>());
+            groupToList.get(groupNum).add(vec[i]);
+        }
+
+        int[] result = new int[n];
         for (int i = 0; i < n; i++) {
-            arr[i][0] = nums[i];  // value
-            arr[i][1] = i;        // original index
+            int num = nums[i];
+            int group = numToGroup.get(num);
+            result[i] = groupToList.get(group).pollFirst(); // Use and remove the smallest element
         }
 
-        // Sort by value
-        Arrays.sort(arr, (a, b) -> Integer.compare(a[0], b[0]));
-
-        int start = 0;
-
-        while (start < n) {
-
-            int end = start;
-
-            // Find one connected group
-            while (end + 1 < n &&
-                   arr[end + 1][0] - arr[end][0] <= limit) {
-                end++;
-        }
-
-            // Collect original indices of this group
-            int size = end - start + 1;
-            int[] indices = new int[size];
-
-            for (int i = 0; i < size; i++) {
-                indices[i] = arr[start + i][1];
-            }
-
-            // Sort indices
-            Arrays.sort(indices);
-
-            // Values are already sorted because arr is sorted
-            // Assign smallest value to smallest index
-            for (int i = 0; i < size; i++) {
-                nums[indices[i]] = arr[start + i][0];
-            }
-
-            start = end + 1;
-        }
-
-        return nums;
+        return result;
     }
 }
