@@ -1,40 +1,49 @@
 class Solution {
     public int maxPalindromes(String s, int k) {
         int n = s.length();
-
-        boolean[][] pal = new boolean[n][n];
-
-        // Precompute palindromes
-        for (int len = 1; len <= n; len++) {
-            for (int i = 0; i + len - 1 < n; i++) {
-                int j = i + len - 1;
-
-                if (s.charAt(i) == s.charAt(j) &&
-                    (len <= 2 || pal[i + 1][j - 1])) {
-                    pal[i][j] = true;
-                }
-            }
+       int[][] dp = new int[n+1][n+1];
+       for (int[] row : dp) {
+       Arrays.fill(row, -1);
+       }
+      
+        if(k==1){
+            return n;
         }
 
-        // dp[i] = maximum palindromes using first i characters
-        int[] dp = new int[n + 1];
+       int count =  solve(s , k , 0 , k-1 ,dp);
+       return count;
 
-        for (int i = 1; i <= n; i++) {
-            // Don't use character i-1
-            dp[i] = dp[i - 1];
+    
+    }
 
-            // Try every palindrome ending at i-1
-            for (int j = 0; j <= i - k; j++) {
+      public int solve(String s , int k , int i, int j , int[][] dp){
+       int n = s.length();
+        if(i>=n || j>=n) return 0;
+        if(dp[i][j]!=-1) return dp[i][j];
+        
+        if(isPalindrome(s , i , j)){
+            int take = 1 + solve(s , k , j+1 , j+k ,dp);
+            int grow = solve(s , k , i , j+1 ,dp);
+            int slide = solve(s , k , i+1 , j+1 ,dp);
 
-                if (pal[j][i - 1]) {
-                    dp[i] = Math.max(
-                        dp[i],
-                        dp[j] + 1
-                    );
-                }
-            }
+            return dp[i][j] = Math.max(take , Math.max(grow , slide));
         }
+         int grow = solve(s , k , i , j+1 ,dp);
+        int slide = solve(s , k , i+1 , j+1, dp);
 
-        return dp[n];
+         return  dp[i][j] = Math.max(grow , slide);
+
+    }
+    public boolean isPalindrome(String s , int i , int j){
+     
+        while(i<j){
+            if(s.charAt(i)!=s.charAt(j)){
+                return false;
+            }
+            i++;
+            j--;
+
+        }
+        return true;
     }
 }
