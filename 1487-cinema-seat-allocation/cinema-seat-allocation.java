@@ -1,57 +1,28 @@
-import java.util.*;
-
 class Solution {
     public int maxNumberOfFamilies(int n, int[][] reservedSeats) {
-        
-        // Store reserved seats row-wise
-        HashMap<Integer, HashSet<Integer>> map = new HashMap<>();
+        Map<Integer, Set<Integer>> mp = new HashMap<>(); //row -> seats booked in each row
 
-        for (int[] seat : reservedSeats) {
-            int row = seat[0];
-            int col = seat[1];
-
-            map.computeIfAbsent(row, k -> new HashSet<>()).add(col);
+        for(int[] reservedSeat : reservedSeats) {
+            int row  = reservedSeat[0];
+            int seat = reservedSeat[1];
+            mp.computeIfAbsent(row, k -> new HashSet<>()).add(seat);
         }
 
-        // Initially every row can accommodate 2 families
-        int ans = (n - map.size()) * 2;
+        int result = (n - mp.size()) * 2;
 
-        for (HashSet<Integer> seats : map.values()) {
+        for(Map.Entry<Integer, Set<Integer>> entry : mp.entrySet()) {
+            Set<Integer> bookedSeats = entry.getValue();
 
-            // Left family: seats 2,3,4,5
-            boolean left = true;
-            for (int i = 2; i <= 5; i++) {
-                if (seats.contains(i)) {
-                    left = false;
-                    break;
-                }
-            }
+            boolean groupA = !bookedSeats.contains(2) && !bookedSeats.contains(3) && !bookedSeats.contains(4) && !bookedSeats.contains(5);
+            boolean groupB = !bookedSeats.contains(4) && !bookedSeats.contains(5) && !bookedSeats.contains(6) && !bookedSeats.contains(7);
+            boolean groupC = !bookedSeats.contains(6) && !bookedSeats.contains(7) && !bookedSeats.contains(8) && !bookedSeats.contains(9);
 
-            // Right family: seats 6,7,8,9
-            boolean right = true;
-            for (int i = 6; i <= 9; i++) {
-                if (seats.contains(i)) {
-                    right = false;
-                    break;
-                }
-            }
-
-            // Middle family: seats 4,5,6,7
-            boolean middle = true;
-            for (int i = 4; i <= 7; i++) {
-                if (seats.contains(i)) {
-                    middle = false;
-                    break;
-                }
-            }
-
-            if (left && right) {
-                ans += 2;
-            } else if (left || right || middle) {
-                ans += 1;
-            }
+            if(groupA && groupC)
+                result += 2;
+            else if(groupA || groupB || groupC)
+                result += 1;
         }
 
-        return ans;
+        return result;
     }
 }
