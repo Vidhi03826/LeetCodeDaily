@@ -2,22 +2,23 @@ class Solution {
     public int stoneGameVIII(int[] stones) {
         int n = stones.length;
 
-        // Calculate total prefix sum
-        int prefixSum = 0;
-        for (int stone : stones) {
-            prefixSum += stone;
+        int[] prefixSum = new int[n];
+        prefixSum[0] = stones[0];
+
+        for (int i = 1; i < n; i++) {
+            prefixSum[i] = prefixSum[i - 1] + stones[i];
         }
 
-        // Initially, the only possible choice is taking all stones
-        int dp = prefixSum;
+        int[] t = new int[n];
+        t[n - 1] = prefixSum[n - 1]; // Base case
 
-        // Move from right to left
         for (int i = n - 2; i >= 1; i--) {
-            prefixSum -= stones[i + 1];
+            int take = prefixSum[i] - t[i + 1];
+            int skip = t[i + 1];
 
-            dp = Math.max(dp, prefixSum - dp);
+            t[i] = Math.max(take, skip);
         }
 
-        return dp;
+        return t[1];
     }
 }
