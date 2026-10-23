@@ -1,27 +1,37 @@
 class Solution {
-    public boolean checkValidString(String s) {
-        int min=0;
-        int max=0;
-        for(int i=0;i<s.length();i++){
-            char ch = s.charAt(i);
-      
-
-        if(ch=='('){
-            min+=1;
-            max+=1;
+     public boolean checkValidString(String s) {
+        int n = s.length();
+        int[][] t = new int[n][n];
+        for (int[] row: t) {
+            Arrays.fill(row, -1);
         }
-        else if(ch==')'){
-            min-=1;
-            max-=1;
+        return isValidString(0, 0, s, t);
+    }
+    
+    private boolean isValidString(int idx, int open, String str, int[][] t) {
+        if (idx == str.length()) {
+            return (open == 0);
         }
-        else {
-            min-=1;
-            max+=1;
+        if (t[idx][open] != -1) {
+            return t[idx][open] == 1;
         }
-          if(min<0) min = 0;
-        if(max<0) return false;
+        boolean isValid = false;
+        if (str.charAt(idx) == '*') {
+            isValid |= isValidString(idx + 1, open + 1, str, t);
+            if (open > 0) {
+                isValid |= isValidString(idx + 1, open - 1, str, t);
+            }
+            isValid |= isValidString(idx + 1, open, str, t);
+        } else {
+            if (str.charAt(idx) == '(') {
+                isValid = isValidString(idx + 1, open + 1, str, t);
+            } else if (open > 0) {
+                isValid = isValidString(idx + 1, open - 1, str, t);
+            }
         }
-       
-        return min==0;
+        t[idx][open] = isValid ? 1 : 0;
+        return isValid;
     }
 }
+
+
