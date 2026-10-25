@@ -1,48 +1,45 @@
-
 class Solution {
     public int minOperations(String s) {
         int n = s.length();
+        char[] arr = s.toCharArray();
 
-        // Check if the string is already sorted
         boolean sorted = true;
-
         for (int i = 1; i < n; i++) {
-            if (s.charAt(i) < s.charAt(i - 1)) {
+            if (arr[i] < arr[i - 1]) {
                 sorted = false;
                 break;
             }
         }
-
-        if (sorted) return 0;
-
-        // A length-2 string cannot be sorted
-        // because the entire string cannot be selected
-        if (n == 2) return -1;
-
-        char minChar = 'z';
-        char maxChar = 'a';
-
-        for (int i = 0; i < n; i++) {
-            char c = s.charAt(i);
-            minChar = (char) Math.min(minChar, c);
-            maxChar = (char) Math.max(maxChar, c);
+        if (sorted) {
+            return 0;
         }
 
-        // Minimum already at the beginning
-        // or maximum already at the end
-        if (s.charAt(0) == minChar ||
-            s.charAt(n - 1) == maxChar) {
+        if (n == 2) {
+            return -1;
+        }
+
+        char minChar = arr[0];
+        char maxChar = arr[0];
+        for (int i = 1; i < n; i++) {
+            minChar = (char) Math.min(minChar, arr[i]);
+            maxChar = (char) Math.max(maxChar, arr[i]);
+        }
+
+        if (arr[0] == minChar || arr[n - 1] == maxChar) {
             return 1;
         }
 
-        // Minimum or maximum occurs in the middle
-        for (int i = 1; i < n - 1; i++) {
-            if (s.charAt(i) == minChar ||
-                s.charAt(i) == maxChar) {
-                return 2;
-            }
+        char minMid = arr[1];
+        char maxMid = arr[1];
+        for (int i = 2; i < n - 1; i++) {
+            minMid = (char) Math.min(minMid, arr[i]);
+            maxMid = (char) Math.max(maxMid, arr[i]);
         }
 
-        return 3;
+        if (arr[0] > maxMid && arr[n - 1] < minMid) {
+            return 3;
+        }
+
+        return 2;
     }
 }
